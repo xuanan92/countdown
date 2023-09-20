@@ -1,3 +1,5 @@
+-- countdown.lua
+
 local M = {}
 local countdown_job_id
 local countdown_win_id
@@ -6,14 +8,15 @@ function M.setup()
 	-- Setup code for the plugin (if needed)
 end
 
-function M.countdown(duration)
+function M.countdown(hours, minutes)
 	if countdown_job_id then
 		print("Countdown is already running. Please wait for the current countdown to finish.")
 		return
 	end
 
-	local width = 40
-	local height = 1
+	local total_seconds = hours * 3600 + minutes * 60
+	local width = 20
+	local height = 2
 
 	-- Open the float terminal at the bottom right of the screen
 	local buf_id = vim.api.nvim_create_buf(false, true)
@@ -31,8 +34,13 @@ function M.countdown(duration)
 		"sh",
 		"-c",
 		string.format(
-			[[for i in $(seq %d -1 1); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
-			duration
+			[[for ((s=%d; s>=0; s--)); do
+          h=$((s/3600)); m=$((s/60%60)); s=$((s%60))
+          printf "Countdown: %02d:%02d:%02d remaining\n" $h $m $s
+          sleep 1
+      done
+      echo 'Countdown: Time is up!']],
+			total_seconds
 		),
 	}, {
 		on_stdout = function(_, data)
