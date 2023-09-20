@@ -35,5 +35,15 @@ local function start_countdown(time)
 	open_float_terminal()
 end
 
--- Define the custom command
-vim.cmd([[command! -nargs=1 Countdown lua start_countdown(<args>)]])
+local function countdown_prompt()
+	-- Prompt the user for the countdown time
+	vim.fn.inputsave()
+	local countdown_time = vim.fn.input("Enter countdown time (in seconds): ")
+	vim.fn.inputrestore()
+
+	-- Start the countdown
+	start_countdown(countdown_time)
+end
+
+-- Create a key mapping to trigger the countdown prompt
+vim.api.nvim_set_keymap("n", "<Leader>c", "<Cmd>lua countdown_prompt()<CR>", { noremap = true, silent = true })
