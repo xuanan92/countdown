@@ -17,14 +17,11 @@ function M.countdown(seconds)
 	countdown_job_id = vim.fn.jobstart({
 		"sh",
 		"-c",
-		string.format(
-			[[for ((s=%d; s>=0; s--)); do
-          printf "Countdown: %02d seconds remaining\n" $s
-          sleep 1
-      done
-      echo 'Countdown: Time is up!']],
-			seconds
-		),
+		[[for ((s=]] .. seconds .. [[; s>=0; s--)); do
+        printf "Countdown: %02d seconds remaining\n" $s
+        sleep 1
+    done
+    echo 'Countdown: Time is up!']],
 	}, {
 		on_stdout = function(_, _, data)
 			local output = table.concat(data, "\n")
