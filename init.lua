@@ -1,9 +1,9 @@
 print("Hello World!")
 
-local function test_function()
+local function some_function()
 	print("yeah, it works")
 end
 
 return {
-	test_function = test_function,
+	some_function = some_function,
 }
