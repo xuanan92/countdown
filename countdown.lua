@@ -26,10 +26,10 @@ function M.countdown(seconds)
 		})
 
 		-- Set terminal buffer options
-		vim.api.nvim_buf_set_option(term_buf, "buftype", "terminal")
-		vim.api.nvim_buf_set_option(term_buf, "bufhidden", "hide")
-		vim.api.nvim_buf_set_option(term_buf, "swapfile", false)
-		vim.api.nvim_buf_set_option(term_buf, "filetype", "terminal")
+		vim.fn.setbufvar(term_buf, "&buftype", "terminal")
+		vim.fn.setbufvar(term_buf, "&bufhidden", "hide")
+		vim.fn.setbufvar(term_buf, "&swapfile", false)
+		vim.fn.setbufvar(term_buf, "&filetype", "terminal")
 
 		-- Start the countdown
 		for i = remaining, 0, -1 do
