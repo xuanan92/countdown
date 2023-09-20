@@ -1,3 +1,5 @@
+-- countdown.lua
+
 local M = {}
 local countdown_job_id
 local countdown_win_id
@@ -13,7 +15,7 @@ function M.countdown(duration)
 	end
 
 	local width = 20
-	local height = 20
+	local height = 2
 
 	-- Open the float terminal at the bottom right of the screen
 	local buf_id = vim.api.nvim_create_buf(false, true)
@@ -42,6 +44,11 @@ function M.countdown(duration)
 			countdown_job_id = nil
 			vim.cmd("echo 'Countdown: Time is up!'")
 			vim.api.nvim_buf_set_option(buf_id, "modifiable", false)
+
+			-- Close the float terminal after 3 seconds
+			vim.defer_fn(function()
+				vim.api.nvim_win_close(countdown_win_id, true)
+			end, 3000)
 		end,
 	})
 end
