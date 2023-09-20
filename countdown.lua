@@ -13,23 +13,17 @@ function M.countdown(seconds)
 		local term_row = vim.o.lines - term_height - 1
 		local term_col = vim.o.columns - term_width
 
-		-- Create the floating terminal
-		local term_buf = vim.api.nvim_create_buf(false, true)
-		local term_win = vim.api.nvim_open_win(term_buf, true, {
-			relative = "editor",
-			row = term_row,
-			col = term_col,
-			width = term_width,
-			height = term_height,
-			style = "minimal",
-			border = "single",
-		})
+		-- Open a new terminal window
+		vim.cmd("botright vsplit term://bash")
 
-		-- Set terminal buffer options
-		vim.api.nvim_buf_set_var(term_buf, "&buftype", "terminal")
-		vim.api.nvim_buf_set_var(term_buf, "&bufhidden", "hide")
-		vim.api.nvim_buf_set_var(term_buf, "&swapfile", false)
-		vim.api.nvim_buf_set_var(term_buf, "&filetype", "terminal")
+		-- Resize the terminal window
+		vim.cmd(term_height .. "wincmd _")
+		vim.cmd(term_width .. "wincmd |")
+
+		-- Move the terminal window to the desired position
+		vim.cmd("wincmd J")
+		vim.cmd(term_row .. "wincmd _")
+		vim.cmd(term_col .. "wincmd |")
 
 		-- Start the countdown
 		for i = remaining, 0, -1 do
@@ -44,13 +38,13 @@ function M.countdown(seconds)
 		end
 
 		-- Close the terminal window
-		vim.api.nvim_win_close(term_win, true)
+		vim.cmd("q!")
 	end
 
 	vim.schedule(display_message)
 end
 
--- Function to be called from Neovim command-line
+-- Function to be called from NeoVim command-line
 function M.setup()
 	vim.cmd([[
     command! -nargs=1 Countdown lua require('countdown').countdown(<args>)
