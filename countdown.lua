@@ -19,7 +19,7 @@ function M.countdown(seconds)
 		"-c",
 		string.format(
 			[[for ((s=%d; s>=0; s--)); do
-          printf "Countdown: %02d seconds remaining\n" $s
+          printf "Countdown: %02d seconds remaining\n" $(($s))
           sleep 1
       done
       echo 'Countdown: Time is up!']],
