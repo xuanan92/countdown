@@ -28,7 +28,7 @@ function M.countdown(duration)
 		vim.cmd("echo 'Countdown: Time is up!'")
 	end
 
-	vim.defer_fn(countdown_callback, 0)
+	vim.schedule_wrap(countdown_callback)()
 end
 
 return M
