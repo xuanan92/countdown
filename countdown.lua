@@ -12,7 +12,7 @@ function M.countdown(duration)
 		return
 	end
 
-	local width = 30
+	local width = 40
 	local height = 1
 
 	-- Open the float terminal at the bottom right of the screen
