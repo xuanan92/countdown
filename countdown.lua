@@ -45,13 +45,10 @@ function M.countdown(seconds)
 end
 
 -- Function to be called from Neovim command-line
-function countdown(args)
-	local seconds = tonumber(args)
-	if seconds then
-		M.countdown(seconds)
-	else
-		print("Invalid argument. Please provide the countdown duration in seconds.")
-	end
+function M.setup()
+	vim.cmd([[
+    command! -nargs=1 Countdown lua require('countdown').countdown(<args>)
+  ]])
 end
 
 return M
