@@ -19,15 +19,16 @@ function M.countdown(seconds)
 		"-c",
 		string.format(
 			[[for ((s=%d; s>=0; s--)); do
-          printf "Countdown: %02d seconds remaining\n" $(($s))
+          printf "Countdown: %02d seconds remaining\n" $s
           sleep 1
       done
       echo 'Countdown: Time is up!']],
 			seconds
 		),
 	}, {
-		on_stdout = function(_, data)
-			notify(data[1], { title = "Countdown", timeout = 0 })
+		on_stdout = function(_, _, data)
+			local output = table.concat(data, "\n")
+			notify(output, { title = "Countdown", timeout = 0 })
 		end,
 		on_exit = function()
 			countdown_job_id = nil
