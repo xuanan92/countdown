@@ -24,11 +24,11 @@ function M.countdown(duration)
 
 	vim.fn.chansend(countdown_job_id, "exit\n")
 
-	vim.schedule(function()
+	vim.defer_fn(function()
 		vim.fn.jobwaitall(countdown_job_id)
 		countdown_job_id = nil
 		vim.cmd("echo 'Countdown: Time is up!'")
-	end)
+	end, 0)
 end
 
 return M
