@@ -49,6 +49,10 @@ function M.countdown(duration)
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
 			end, 3000)
+
+			-- Close all previous countdown terminals
+			vim.fn.win_gotoid(countdown_win_id)
+			vim.cmd([[silent! tabonly]])
 		end,
 	})
 end
