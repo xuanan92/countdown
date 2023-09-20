@@ -1,4 +1,4 @@
--- countdown.lua
+--- countdown.lua
 
 local M = {}
 local countdown_job_id
@@ -24,13 +24,11 @@ function M.countdown(duration)
 
 	vim.fn.chansend(countdown_job_id, "exit\n")
 
-	vim.fn.jobwait([[
-    function(job_id, data, event)
-      if event == "exit" then
-        vim.api.nvim_feedkeys(":echo 'Countdown: Time is up!'", "n", true)
-      end
-    endfunction
-  ]])
+	vim.schedule(function()
+		vim.fn.jobwaitall(countdown_job_id)
+		countdown_job_id = nil
+		vim.cmd("echo 'Countdown: Time is up!'")
+	end)
 end
 
-return M -- countdown.lua
+return M
