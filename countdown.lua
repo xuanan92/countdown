@@ -26,10 +26,10 @@ function M.countdown(seconds)
 		})
 
 		-- Set terminal buffer options
-		vim.fn.setbufvar(term_buf, "&buftype", "terminal")
-		vim.fn.setbufvar(term_buf, "&bufhidden", "hide")
-		vim.fn.setbufvar(term_buf, "&swapfile", false)
-		vim.fn.setbufvar(term_buf, "&filetype", "terminal")
+		vim.api.nvim_buf_set_var(term_buf, "&buftype", "terminal")
+		vim.api.nvim_buf_set_var(term_buf, "&bufhidden", "hide")
+		vim.api.nvim_buf_set_var(term_buf, "&swapfile", false)
+		vim.api.nvim_buf_set_var(term_buf, "&filetype", "terminal")
 
 		-- Start the countdown
 		for i = remaining, 0, -1 do
@@ -47,7 +47,7 @@ function M.countdown(seconds)
 		vim.api.nvim_win_close(term_win, true)
 	end
 
-	vim.schedule_wrap(display_message)()
+	vim.schedule(display_message)
 end
 
 -- Function to be called from Neovim command-line
