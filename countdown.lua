@@ -1,49 +1,56 @@
-local function open_float_terminal()
-	-- Set the terminal dimensions
-	local width = 40
-	local height = 1
+-- countdown.lua
 
-	-- Calculate the terminal window position
-	local col = math.floor((vim.o.columns - width) / 2)
-	local row = math.floor((vim.o.lines - height) / 2)
+local M = {}
+local countdown_job_id
+local countdown_win_id
 
-	-- Open the terminal in a floating window
-	vim.cmd(string.format("terminal ++curwin ++rows=%d ++cols=%d ++row=%d ++col=%d", height, width, row, col))
+function M.setup()
+	-- Setup code for the plugin (if needed)
 end
 
-local function start_countdown(time)
-	-- Check if the time is a valid number
-	local countdown_time = tonumber(time)
-	if countdown_time == nil then
-		print("Invalid countdown time")
+function M.countdown(duration)
+	if countdown_job_id then
+		print("Countdown is already running. Please wait for the current countdown to finish.")
 		return
 	end
 
-	-- Start the countdown
-	for i = countdown_time, 0, -1 do
-		-- Clear the screen
-		vim.cmd("redraw")
+	local width = 20
+	local height = 2
 
-		-- Print the countdown value
-		print("Countdown: " .. i)
+	-- Open the float terminal at the bottom right of the screen
+	local buf_id = vim.api.nvim_create_buf(false, true)
+	countdown_win_id = vim.api.nvim_open_win(buf_id, true, {
+		relative = "editor",
+		width = width,
+		height = height,
+		row = vim.o.lines - height,
+		col = vim.o.columns - width,
+		style = "minimal",
+		border = "single",
+	})
 
-		-- Wait for 1 second
-		vim.cmd("sleep 1000m")
-	end
+	countdown_job_id = vim.fn.jobstart({
+		"sh",
+		"-c",
+		string.format(
+			[[for i in $(seq %d -1 1); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
+			duration
+		),
+	}, {
+		on_stdout = function(_, data)
+			vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, data)
+		end,
+		on_exit = function()
+			countdown_job_id = nil
+			vim.cmd("echo 'Countdown: Time is up!'")
+			vim.api.nvim_buf_set_option(buf_id, "modifiable", false)
 
-	-- Open the floating terminal
-	open_float_terminal()
+			-- Close the float terminal after 3 seconds
+			vim.defer_fn(function()
+				vim.api.nvim_win_close(countdown_win_id, true)
+			end, 7200)
+		end,
+	})
 end
 
-local function countdown_prompt()
-	-- Prompt the user for the countdown time
-	vim.fn.inputsave()
-	local countdown_time = vim.fn.input("Enter countdown time (in seconds): ")
-	vim.fn.inputrestore()
-
-	-- Start the countdown
-	start_countdown(countdown_time)
-end
-
--- Create a key mapping to trigger the countdown prompt
-vim.api.nvim_set_keymap("n", "<Space>z", "<Cmd>lua countdown_prompt()<CR>", { noremap = true, silent = true })
+return M
