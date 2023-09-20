@@ -47,7 +47,7 @@ function M.countdown(seconds)
 		vim.api.nvim_win_close(term_win, true)
 	end
 
-	vim.schedule(display_message)
+	vim.schedule_wrap(display_message)()
 end
 
 -- Function to be called from Neovim command-line
