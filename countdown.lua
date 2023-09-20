@@ -46,4 +46,4 @@ local function countdown_prompt()
 end
 
 -- Create a key mapping to trigger the countdown prompt
-vim.api.nvim_set_keymap("n", "<Leader>c", "<Cmd>lua countdown_prompt()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Space>z", "<Cmd>lua countdown_prompt()<CR>", { noremap = true, silent = true })
