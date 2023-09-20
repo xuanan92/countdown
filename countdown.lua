@@ -34,6 +34,12 @@ function M.countdown(seconds)
 		-- Start the countdown
 		for i = remaining, 0, -1 do
 			vim.fn.termopen("echo Countdown: " .. i .. " seconds remaining")
+
+			-- Allow editing the text while counting down
+			vim.cmd("startinsert")
+			vim.cmd("autocmd InsertLeave <buffer> stopinsert")
+
+			-- Wait for 1 second
 			vim.wait(1000)
 		end
 
