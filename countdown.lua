@@ -1,5 +1,6 @@
 local M = {}
 local countdown_job_id
+local countdown_win_id
 
 function M.setup()
 	-- Setup code for the plugin (if needed)
@@ -11,24 +12,38 @@ function M.countdown(duration)
 		return
 	end
 
+	local width = 200
+	local height = 100
+
+	-- Open the float terminal at the bottom right of the screen
+	local buf_id = vim.api.nvim_create_buf(false, true)
+	countdown_win_id = vim.api.nvim_open_win(buf_id, true, {
+		relative = "editor",
+		width = width,
+		height = height,
+		row = vim.o.lines - height,
+		col = vim.o.columns - width,
+		style = "minimal",
+		border = "single",
+	})
+
 	countdown_job_id = vim.fn.jobstart({
 		"sh",
 		"-c",
-		string.format([[sleep %ds && echo 'Countdown: Time is up!']], duration),
+		string.format(
+			[[for i in $(seq %d -1 1); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
+			duration
+		),
+	}, {
+		on_stdout = function(_, data)
+			vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, data)
+		end,
+		on_exit = function()
+			countdown_job_id = nil
+			vim.cmd("echo 'Countdown: Time is up!'")
+			vim.api.nvim_buf_set_option(buf_id, "modifiable", false)
+		end,
 	})
-
-	vim.fn.chansend(countdown_job_id, "exit\n")
-
-	local countdown_callback = function()
-		while vim.fn.jobwait(countdown_job_id, 0) == -1 do
-			-- Waiting for the countdown job to finish
-		end
-
-		countdown_job_id = nil
-		vim.cmd("echo 'Countdown: Time is up!'")
-	end
-
-	vim.schedule_wrap(countdown_callback)()
 end
 
 return M
