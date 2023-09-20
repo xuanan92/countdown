@@ -1,49 +1,49 @@
+-- countdown.lua
+
+local notify = require("notify")
 local M = {}
 local countdown_job_id
-local countdown_win_id
 
 function M.setup()
 	-- Setup code for the plugin (if needed)
 end
 
-function M.countdown(duration)
+function M.countdown(seconds)
 	if countdown_job_id then
 		print("Countdown is already running. Please wait for the current countdown to finish.")
 		return
 	end
 
-	local width = 40
-	local height = 1
-
-	-- Open the float terminal at the bottom right of the screen
-	local buf_id = vim.api.nvim_create_buf(false, true)
-	countdown_win_id = vim.api.nvim_open_win(buf_id, true, {
-		relative = "editor",
-		width = width,
-		height = height,
-		row = vim.o.lines - height,
-		col = vim.o.columns - width,
-		style = "minimal",
-		border = "single",
-	})
-
 	countdown_job_id = vim.fn.jobstart({
 		"sh",
 		"-c",
 		string.format(
-			[[for i in $(seq %d -1 1); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
-			duration
+			[[for ((s=%d; s>=0; s--)); do
+          printf "Countdown: %02d seconds remaining\n" $s
+          sleep 1
+      done
+      echo 'Countdown: Time is up!']],
+			seconds
 		),
 	}, {
 		on_stdout = function(_, data)
-			vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, data)
+			notify(data[1], { title = "Countdown", timeout = 0 })
 		end,
 		on_exit = function()
 			countdown_job_id = nil
-			vim.cmd("echo 'Countdown: Time is up!'")
-			vim.api.nvim_buf_set_option(buf_id, "modifiable", false)
+			notify("Time is up!", { title = "Countdown", timeout = 0 })
 		end,
 	})
+end
+
+-- Function to be called from Neovim command-line
+function countdown(args)
+	local seconds = tonumber(args)
+	if seconds then
+		M.countdown(seconds)
+	else
+		print("Invalid argument. Please provide the countdown duration in seconds.")
+	end
 end
 
 return M
