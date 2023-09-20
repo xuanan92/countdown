@@ -23,9 +23,9 @@ function M.countdown(seconds)
     done
     echo 'Countdown: Time is up!']],
 	}, {
-		on_stdout = function(_, data)
+		on_stdout = function(_, _, data)
 			local output = table.concat(data, "\n")
-			notify(output:gsub('"', '\\"'), { title = "Countdown", timeout = 0 })
+			notify(tostring(output), { title = "Countdown", timeout = 0 })
 		end,
 		on_exit = function()
 			countdown_job_id = nil
