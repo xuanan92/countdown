@@ -60,7 +60,7 @@ function M.beep()
 		os.execute('powershell -c "[console]::beep(500, 100)"')
 	else
 		-- Linux or Unix-like systems
-		os.execute("play -n synth 0.1 sine 800")
+		os.execute("beep -f 800 -l 100")
 	end
 end
 
