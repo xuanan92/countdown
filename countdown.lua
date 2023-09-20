@@ -1,5 +1,3 @@
--- countdown.lua
-
 local M = {}
 local countdown_job_id
 
@@ -21,14 +19,16 @@ function M.countdown(duration)
 
 	vim.fn.chansend(countdown_job_id, "exit\n")
 
-	vim.defer_fn(function()
+	local countdown_callback = function()
 		while vim.fn.jobwait(countdown_job_id, 0) == -1 do
 			-- Waiting for the countdown job to finish
 		end
 
 		countdown_job_id = nil
 		vim.cmd("echo 'Countdown: Time is up!'")
-	end, 0)
+	end
+
+	vim.defer_fn(countdown_callback, 0)
 end
 
 return M
