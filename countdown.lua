@@ -1,36 +1,55 @@
 -- countdown.lua
 
-local notify = require("notify")
 local M = {}
 
+local remaining = 0
+local timer = nil
+
 function M.countdown(seconds)
-	local remaining = seconds
+	remaining = seconds
 
-	local function update_notification()
-		notify("Countdown: " .. tostring(remaining) .. " seconds remaining", {
-			title = "Countdown",
-			timeout = 0,
-		})
+	if timer then
+		timer:stop()
+		timer:close()
+		timer = nil
 	end
 
-	local function finish_notification()
-		notify("Countdown: Time is up!", {
-			title = "Countdown",
-			timeout = 0,
-		})
-	end
+	timer = vim.loop.new_timer()
+	timer:start(
+		1000,
+		1000,
+		vim.schedule_wrap(function()
+			if remaining > 0 then
+				remaining = remaining - 1
+				vim.api.nvim_set_var("countdown_time", remaining)
+			else
+				timer:stop()
+				timer:close()
+				timer = nil
+			end
+		end)
+	)
+end
 
-	local function countdown_loop()
-		if remaining > 0 then
-			update_notification()
-			remaining = remaining - 1
-			vim.defer_fn(countdown_loop, 1000) -- Schedule the next iteration after 1 second
-		else
-			finish_notification()
-		end
-	end
+function M.setup()
+	vim.api.nvim_exec(
+		[[
+    augroup CountdownStatusline
+      autocmd!
+      autocmd User Statusline * call v:lua.require'countdown'.update_statusline()
+    augroup END
+  ]],
+		false
+	)
+end
 
-	countdown_loop()
+function M.update_statusline()
+	local remaining = vim.api.nvim_get_var("countdown_time")
+	if remaining then
+		vim.api.nvim_command(
+			'let &statusline = "%#StatusLine# Countdown: " . ' .. remaining .. ' . " seconds remaining "'
+		)
+	end
 end
 
 -- Function to be called from Neovim command-line
