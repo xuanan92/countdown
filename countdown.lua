@@ -12,8 +12,8 @@ function M.countdown(duration)
 		return
 	end
 
-	local width = 20
-	local height = 2
+	local width = 50
+	local height = 1
 
 	-- Open the float terminal at the bottom right of the screen
 	local buf_id = vim.api.nvim_create_buf(false, true)
