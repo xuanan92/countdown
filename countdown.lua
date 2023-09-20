@@ -1,5 +1,3 @@
--- countdown.lua
-
 local M = {}
 local countdown_job_id
 local countdown_win_id
@@ -14,8 +12,8 @@ function M.countdown(duration)
 		return
 	end
 
-	local width = 20
-	local height = 2
+	local width = 30
+	local height = 1
 
 	-- Open the float terminal at the bottom right of the screen
 	local buf_id = vim.api.nvim_create_buf(false, true)
@@ -44,12 +42,6 @@ function M.countdown(duration)
 			countdown_job_id = nil
 			vim.cmd("echo 'Countdown: Time is up!'")
 			vim.api.nvim_buf_set_option(buf_id, "modifiable", false)
-
-			-- Show "Countdown done" at specific time after countdown is complete
-			local specific_time = os.date("%H:%M:%S", os.time() + 10) -- Change the time interval as needed
-			vim.defer_fn(function()
-				vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, { "Countdown done at " .. specific_time })
-			end, 0)
 		end,
 	})
 end
