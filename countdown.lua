@@ -11,6 +11,7 @@ function M.countdown(duration)
 		-- If a countdown is already running, stop the current countdown
 		vim.fn.jobstop(countdown_job_id)
 		vim.api.nvim_win_close(countdown_win_id, true)
+		countdown_job_id = nil
 	end
 
 	local width = 50
@@ -47,17 +48,19 @@ function M.countdown(duration)
 			-- Close the float terminal after 3 seconds
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
+				M.beep() -- Call the beep function
 			end, 0)
 		end,
 	})
+end
 
-	-- Close all previous countdown terminals
-	local current_win_id = vim.api.nvim_get_current_win()
-	local windows = vim.api.nvim_list_wins()
-	for _, win in ipairs(windows) do
-		if win ~= current_win_id and vim.api.nvim_win_get_buf(win) == buf_id then
-			vim.api.nvim_win_close(win, true)
-		end
+function M.beep()
+	if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+		-- Windows
+		os.execute('powershell -c "[console]::beep(500, 100)"')
+	else
+		-- Linux or Unix-like systems
+		os.execute("printf '\a'")
 	end
 end
 
