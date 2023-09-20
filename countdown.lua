@@ -1,13 +1,3 @@
--- countdown.lua
-
-local M = {}
-local countdown_job_id
-local countdown_win_id
-
-function M.setup()
-	-- Setup code for the plugin (if needed)
-end
-
 function M.countdown(hours, minutes)
 	if countdown_job_id then
 		print("Countdown is already running. Please wait for the current countdown to finish.")
@@ -53,5 +43,3 @@ function M.countdown(hours, minutes)
 		end,
 	})
 end
-
-return M
