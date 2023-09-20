@@ -60,7 +60,7 @@ function M.beep()
 		os.execute('powershell -c "[console]::beep(500, 100)"')
 	else
 		-- Linux or Unix-like systems
-		os.execute("printf '\a'")
+		os.execute("paplay --volume=32768 --channels=1 --rate=8000 /dev/zero")
 	end
 end
 
