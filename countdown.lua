@@ -34,7 +34,7 @@ function M.countdown(duration)
 		"-c",
 		string.format(
 			-- [[for i in $(seq %d -1 -50); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
-			[[for i in $(seq %d -1 -7200); do if [ $i -eq 0 ]; then %s; else echo "Countdown: $i seconds remaining"; fi; sleep 1; done; echo 'Countdown: Time is up!']],
+			[[for i in $(seq %d -1 -7200); if [ $i -eq 0 ]; then %s; else echo "Countdown: $i seconds remaining"; fi; sleep 1; done; echo 'Countdown: Time is up!']],
 			duration,
 			"vim.cmd(\"echo 'Countdown: Time is up!'\")"
 		),
