@@ -1,3 +1,11 @@
+local M = {}
+local countdown_job_id
+local countdown_win_id
+
+function M.setup()
+	-- Setup code for the plugin (if needed)
+end
+
 function M.countdown(duration)
 	if countdown_job_id then
 		-- If a countdown is already running, stop the current countdown
@@ -44,14 +52,7 @@ function M.countdown(duration)
 		end,
 	})
 end
--- local M = {}
--- local countdown_job_id
--- local countdown_win_id
---
--- function M.setup()
--- 	-- Setup code for the plugin (if needed)
--- end
---
+
 -- function M.countdown(duration)
 -- 	if countdown_job_id then
 -- 		-- If a countdown is already running, stop the current countdown
