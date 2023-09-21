@@ -1,6 +1,3 @@
-local M = {}
-local countdown_job_id
-local countdown_win_id
 function M.countdown(duration)
 	if countdown_job_id then
 		-- If a countdown is already running, stop the current countdown
