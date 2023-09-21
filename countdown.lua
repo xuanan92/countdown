@@ -48,7 +48,6 @@ function M.countdown(duration)
 			-- Close the float terminal after 3 seconds
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
-				M.beep() -- Call the beep function
 			end, 0)
 		end,
 	})
