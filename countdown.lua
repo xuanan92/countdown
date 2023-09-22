@@ -33,8 +33,7 @@ function M.countdown(duration)
 		"sh",
 		"-c",
 		string.format(
-			[[for i in $(seq %d -1 -144000); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
-			-- [[for i in $(seq %d -1 -7200); if [ $i -eq 0 ]; then %s; else echo "Countdown: $i seconds remaining"; fi; sleep 1; done; echo 'Countdown: Time is up!']],
+			[[for i in $(seq %d -1 1); do echo "Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
 			duration
 		),
 	}, {
