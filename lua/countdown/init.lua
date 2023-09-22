@@ -4,6 +4,7 @@ local countdown_win_id
 
 function M.setup()
 	-- Setup code for the plugin (if needed)
+	-- vim.cmd("command! -nargs=1 Countdown lua require('countdown').countdown(<args>)")
 end
 
 function M.countdown(duration)
@@ -51,11 +52,6 @@ function M.countdown(duration)
 			end, 0)
 		end,
 	})
-end
-
-function M.setup_commands()
-	-- Define the :Countdown command
-	vim.cmd("command! -nargs=1 Countdown lua require('countdown').countdown(<args>)")
 end
 
 return M
