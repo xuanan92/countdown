@@ -44,7 +44,7 @@ function M.countdown(duration)
 		on_exit = function(_, _)
 			countdown_job_id = nil
 			vim.cmd("echo 'Countdown: Time is up!'")
-			vim.api.nvim_buf_set_option(buf_id, "modifiable", false)
+			vim.api.nvim_buf_set_option(buf_id, "modifiable", true)
 			-- Append spent duration on the first line of the current editor
 			local current_buffer = vim.api.nvim_get_current_buf()
 			local current_lines = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
