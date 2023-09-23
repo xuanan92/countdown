@@ -65,9 +65,6 @@ function M.countdown(duration)
 
 			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { duration_line })
 
-			-- Delete the first line of the current buffer
-			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, {})
-
 			-- Set the current buffer as non-modifiable again
 			vim.api.nvim_buf_set_option(current_buffer, "modifiable", false)
 			-- Close the float terminal after 0 seconds
