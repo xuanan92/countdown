@@ -57,14 +57,15 @@ function M.countdown(duration)
 			local duration_line = current_lines[1] or ""
 			local duration_spent = string.match(duration_line, "#([^#]+)#")
 			local durationToMin = duration / 60
+			local roundedDurationToMin = string.format("%0.2f", durationToMin)
 			local new_duration
 
 			if duration_spent then
 				local duration_spent_number = tonumber(duration_spent) or 0
-				new_duration = duration_spent_number + durationToMin
+				new_duration = duration_spent_number + roundedDurationToMin
 				duration_line = string.gsub(duration_line, "#[%w_]+#", "#" .. new_duration .. "#")
 			else
-				duration_line = "#" .. durationToMin .. "# " .. duration_line
+				duration_line = "#" .. roundedDurationToMin .. "# " .. duration_line
 			end
 
 			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { duration_line })
