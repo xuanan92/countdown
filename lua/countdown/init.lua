@@ -65,8 +65,6 @@ function M.countdown(duration)
 
 			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { duration_line })
 
-			-- Set the current buffer as non-modifiable again
-			vim.api.nvim_buf_set_option(current_buffer, "modifiable", false)
 			-- Close the float terminal after 0 seconds
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
