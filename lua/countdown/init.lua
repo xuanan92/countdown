@@ -58,7 +58,7 @@ function M.countdown(duration)
 			local duration_spent = string.match(duration_line, "#([%d]+)#")
 			local new_duration
 			local duration_spent_number = tonumber(duration_spent) or 0
-			local addDurationToMin = math.ceil(duration / 60)
+			local addDurationToMin = math.floor(duration / 60)
 			new_duration = duration_spent_number + addDurationToMin
 			duration_line = string.gsub(duration_line, "#[%d]+#", "#" .. new_duration .. "#")
 
