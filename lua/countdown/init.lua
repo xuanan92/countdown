@@ -17,6 +17,10 @@ function M.countdown(duration)
 
 	local width = 50
 	local height = 1
+	--
+	-- Get the current buffer and window
+	local current_buffer = vim.api.nvim_get_current_buf()
+	local current_window = vim.api.nvim_get_current_win()
 
 	-- Open the float terminal at the bottom right of the screen
 	local buf_id = vim.api.nvim_create_buf(false, true)
@@ -46,7 +50,6 @@ function M.countdown(duration)
 			vim.cmd("echo 'Countdown: Time is up!'")
 
 			-- Set the current buffer as modifiable
-			local current_buffer = vim.api.nvim_get_current_buf()
 			vim.api.nvim_buf_set_option(current_buffer, "modifiable", true)
 
 			-- Append spent duration on the first line of the current editor
@@ -69,6 +72,7 @@ function M.countdown(duration)
 			-- Close the float terminal after 0 seconds
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
+				vim.api.nvim_set_current_win(current_window)
 			end, 0)
 		end,
 	})
