@@ -55,7 +55,7 @@ function M.countdown(duration)
 			-- Append spent duration on the first line of the current editor
 			local current_lines = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
 			local duration_line = current_lines[1] or ""
-			local duration_spent = string.match(duration_line, "#([^#]+)#")
+			local duration_spent = string.match(duration_line, "#(%d+)#")
 			local durationToMin = math.floor(duration_spent / 60)
 			local new_duration
 
