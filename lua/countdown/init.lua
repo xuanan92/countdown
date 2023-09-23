@@ -56,7 +56,7 @@ function M.countdown(duration)
 			local current_lines = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
 			local duration_line = current_lines[1] or ""
 			local duration_spent = string.match(duration_line, "#(%d+)#")
-			local durationToMin = math.floor(duration_spent / 60)
+			local durationToMin = math.ceil(duration_spent / 60)
 			local new_duration
 
 			if duration_spent then
