@@ -124,8 +124,8 @@ function M.countreset()
 		local next_line_number = history_line_number + 1
 		local next_line = current_Nlines[next_line_number]
 		if next_line then
-			next_line = ""
-			table.insert(current_Nlines, next_line_number, next_line)
+			local new_line = ""
+			table.insert(current_Nlines, next_line_number, new_line)
 			vim.api.nvim_buf_set_lines(current_buffer, history_line_number, next_line_number, false, { next_line })
 		end
 	end
