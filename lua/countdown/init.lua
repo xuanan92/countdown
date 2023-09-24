@@ -88,7 +88,7 @@ function M.countdown(duration)
 					if duration_action then
 						next_line = string.gsub(next_line, "&[%d]&", "&" .. new_durationS .. "&")
 					else
-						next_line = "&" .. new_durationS .. "& "
+						next_line = "&" .. new_durationS .. "& " .. next_line
 					end
 					vim.api.nvim_buf_set_lines(
 						current_buffer,
