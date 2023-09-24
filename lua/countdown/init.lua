@@ -80,13 +80,14 @@ function M.countdown(duration)
 			end
 
 			if plans_line_number then
-				local next_line_number = plans_line_number
+				local next_line_number = plans_line_number + 1
 				local next_line = current_Nlines[next_line_number]
 				if next_line then
 					current_Nlines[next_line_number] = "&0& " .. next_line
 					vim.api.nvim_buf_set_lines(
 						current_buffer,
-						next_line_number,
+						plans_line_number,
+						-- next_line_number,
 						next_line_number,
 						false,
 						{ current_Nlines[next_line_number] }
