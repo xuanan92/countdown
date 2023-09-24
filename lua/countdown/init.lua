@@ -69,6 +69,30 @@ function M.countdown(duration)
 
 			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { duration_line })
 
+			-- Append "&0& " to the next line after the line containing "# =Plans="
+			local current_Nlines = vim.api.nvim_buf_get_lines(current_buffer, 0, -1, false)
+			local plans_line_number
+			for i, line in ipairs(current_Nlines) do
+				if line:find("# =Plans=") then
+					plans_line_number = i
+					break
+				end
+			end
+
+			if plans_line_number then
+				local next_line_number = plans_line_number + 1
+				local next_line = current_Nlines[next_line_number]
+				if next_line then
+					current_Nlines[next_line_number] = "&0& " .. next_line
+					vim.api.nvim_buf_set_lines(
+						current_buffer,
+						next_line_number,
+						next_line_number,
+						false,
+						{ current_Nlines[next_line_number] }
+					)
+				end
+			end
 			-- Close the float terminal after 0 seconds
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
