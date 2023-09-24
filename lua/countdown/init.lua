@@ -111,6 +111,7 @@ function M.countreset()
 	local current_buffer = vim.api.nvim_get_current_buf()
 	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
 	first_line[1] = string.gsub(first_line[1], "&[%d]+&", "&0&")
+	vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { first_line[1] })
 end
 
 return M
