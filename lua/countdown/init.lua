@@ -86,7 +86,7 @@ function M.countdown(duration)
 					-- check if next_line has pattern "&" "&" already
 					local duration_action = string.match(next_line, "&([%d]+)&")
 					if duration_action then
-						next_line = string.gsub(next_line, "&[%d]&", "&" .. new_durationS .. "&")
+						next_line = string.gsub(next_line, "&[%d]+&", "&" .. new_durationS .. "&")
 					else
 						next_line = "&" .. new_durationS .. "& " .. next_line
 					end
