@@ -82,7 +82,8 @@ function M.countdown(duration)
 			if plans_line_number then
 				local next_line_number = plans_line_number + 1
 				local current_action_line =
-					vim.api.nvim_buf_get_lines(current_buffer, plans_line_number, next_line_number, false)
+					-- vim.api.nvim_buf_get_lines(current_buffer, plans_line_number, next_line_number, false)
+					vim.api.nvim_buf_get_lines(current_buffer, next_line_number, next_line_number + 1, false)
 				local duration_action_line = current_action_line[1] or ""
 				local next_line = current_Nlines[next_line_number]
 				if next_line then
@@ -92,7 +93,7 @@ function M.countdown(duration)
 						current_Nlines[next_line_number] =
 							string.gsub(duration_action, "&[%d]&", "&" .. new_durationS .. "&")
 					else
-						current_Nlines[next_line_number] = "&" .. new_durationS .. "&" .. next_line
+						current_Nlines[next_line_number] = "&" .. new_durationS .. "& " .. next_line
 					end
 					vim.api.nvim_buf_set_lines(
 						current_buffer,
