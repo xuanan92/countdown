@@ -65,7 +65,7 @@ function M.countdown(duration)
 			new_duration = duration_spent_number + addDurationToMin
 			new_durationS = durationS_spent_number + addDurationToMin
 			duration_line =
-				string.gsub(duration_line, "&[%d]& #[%d]+#", "&" .. new_durationS .. "& #" .. new_duration .. "#")
+				string.gsub(duration_line, "&[%d]+& #[%d]+#", "&" .. new_durationS .. "& #" .. new_duration .. "#")
 
 			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { duration_line })
 
