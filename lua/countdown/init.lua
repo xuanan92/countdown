@@ -113,7 +113,20 @@ function M.countreset()
 	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
 	first_line[1] = string.gsub(first_line[1], "&[%d]+&", "&0&")
 	vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { first_line[1] })
+
+	-- Append "&0& " to the next line after the line containing "# =Plans="
 	local current_Nlines = vim.api.nvim_buf_get_lines(current_buffer, 0, -1, false)
+	local plans_line_number
+	for i, line in ipairs(current_Nlines) do
+		if line:find("# =Plans=") then
+			plans_line_number = i
+			break
+		end
+	end
+	local new_line = current_Nlines[plans_line_number + 1]
+	table.remove(current_Nlines, plans_line_number + 1)
+	vim.api.nvim_buf_set_lines(current_buffer, 0, -1, false, { unpack(current_Nlines) })
+	-- append new lines to history next line
 	for i, line in ipairs(current_Nlines) do
 		if line:find("# =History=") then
 			history_line_number = i
@@ -124,7 +137,6 @@ function M.countreset()
 		local next_line_number = history_line_number + 1
 		local next_line = current_Nlines[next_line_number]
 		if next_line then
-			local new_line = "dk "
 			table.insert(current_Nlines, next_line_number, new_line)
 			vim.api.nvim_buf_set_lines(current_buffer, 0, -1, false, { unpack(current_Nlines) })
 		end
