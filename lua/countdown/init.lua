@@ -108,10 +108,26 @@ function M.countdown(duration)
 end
 
 function M.countreset()
+	local history_line_number
 	local current_buffer = vim.api.nvim_get_current_buf()
 	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
 	first_line[1] = string.gsub(first_line[1], "&[%d]+&", "&0&")
 	vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { first_line[1] })
+	local current_Nlines = vim.api.nvim_buf_get_lines(current_buffer, 0, -1, false)
+	for i, line in ipairs(current_Nlines) do
+		if line:find("# =History=") then
+			history_line_number = i
+			break
+		end
+	end
+	if history_line_number then
+		local next_line_number = history_line_number + 1
+		local next_line = current_Nlines[next_line_number]
+		if next_line then
+			next_line = "\r" .. next_line
+			vim.api.nvim_buf_set_lines(current_buffer, history_line_number, next_line_number, false, { next_line })
+		end
+	end
 end
 
 return M
