@@ -57,7 +57,7 @@ function M.countdown(duration)
 			local current_lines = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
 			local duration_line = current_lines[1] or ""
 			local duration_spent = string.match(duration_line, "#([%d]+)#")
-			local durationS_spent = string.match(duration_line, "^([%d]+)^")
+			local durationS_spent = string.match(duration_line, "&([%d]+)&")
 			local new_duration
 			local new_durationS
 			local duration_spent_number = tonumber(duration_spent) or 0
@@ -65,11 +65,11 @@ function M.countdown(duration)
 			new_duration = duration_spent_number + addDurationToMin
 			new_durationS = durationS_spent_number + addDurationToMin
 			duration_line =
-				string.gsub(duration_line, "^[%d]+^ #[%d]+#", "^" .. new_durationS .. "^ #" .. new_duration .. "#")
+				string.gsub(duration_line, "&[%d]+& #[%d]+#", "&" .. new_durationS .. "& #" .. new_duration .. "#")
 
 			vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { duration_line })
 
-			-- Append "^0^ " to the next line after the line containing "# =Plans="
+			-- Append "&0& " to the next line after the line containing "# =Plans="
 			local current_Nlines = vim.api.nvim_buf_get_lines(current_buffer, 0, -1, false)
 			local plans_line_number
 			for i, line in ipairs(current_Nlines) do
@@ -83,11 +83,11 @@ function M.countdown(duration)
 				local next_line_number = plans_line_number + 1
 				local next_line = current_Nlines[next_line_number]
 				if next_line then
-					local duration_action = string.match(next_line, "^([%d]+)^")
+					local duration_action = string.match(next_line, "&([%d]+)&")
 					if duration_action then
-						next_line = string.gsub(next_line, "^[%d]+^", "^" .. new_durationS .. "^")
+						next_line = string.gsub(next_line, "&[%d]+&", "&" .. new_durationS .. "&")
 					else
-						next_line = "^" .. new_durationS .. "^ " .. next_line
+						next_line = "&" .. new_durationS .. "& " .. next_line
 					end
 					vim.api.nvim_buf_set_lines(
 						current_buffer,
@@ -110,7 +110,7 @@ end
 function M.countreset()
 	local current_buffer = vim.api.nvim_get_current_buf()
 	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
-	first_line[1] = string.gsub(first_line[1], "^[%d]+^", "^0^")
+	first_line[1] = string.gsub(first_line[1], "&[%d]+&", "&0&")
 	vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { first_line[1] })
 end
 
