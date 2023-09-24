@@ -84,19 +84,13 @@ function M.countdown(duration)
 				local next_line = current_Nlines[next_line_number]
 				if next_line then
 					-- check if next_line has pattern "&" "&" already
-					local duration_action = string.match(current_Nlines[next_line_number], "&([%d]+)&")
-					if duration_action then
-						current_Nlines[next_line_number] =
-							string.gsub(current_Nlines[next_line_number], "&[%d]&", "&" .. new_durationS .. "&")
-					else
-						current_Nlines[next_line_number] = "&" .. new_durationS .. "& " .. next_line
-					end
+					next_line = string.gsub(next_line, "&[%d]&", "&" .. new_durationS .. "&" .. next_line)
 					vim.api.nvim_buf_set_lines(
 						current_buffer,
 						plans_line_number,
 						next_line_number,
 						false,
-						{ current_Nlines[next_line_number] }
+						{ next_line }
 					)
 				end
 			end
