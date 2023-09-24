@@ -126,7 +126,7 @@ function M.countreset()
 		if next_line then
 			local new_line = ""
 			table.insert(current_Nlines, next_line_number, new_line)
-			vim.api.nvim_buf_set_lines(current_buffer, history_line_number, next_line_number, false, { next_line })
+			vim.api.nvim_buf_set_lines(current_buffer, 0, -1, false, { current_Nlines })
 		end
 	end
 end
