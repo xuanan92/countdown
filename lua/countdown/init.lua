@@ -9,7 +9,7 @@ end
 
 function M.sound()
 	-- linux
-	os.execute("timeout 30 sox $HOME/mydotfile/joplin/sounds/pr_in_space.mp3 -d")
+	os.execute("timeout 3 sox $HOME/mydotfile/joplin/sounds/pr_in_space.mp3 -d &")
 end
 
 function M.countdown(duration)
