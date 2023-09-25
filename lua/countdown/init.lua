@@ -9,7 +9,7 @@ end
 
 function M.sound()
 	-- linux
-	os.execute("aplay $HOME/mydotfile/joplin/sounds/pr_in_space.mp3")
+	os.execute("echo -e '\a'")
 end
 
 function M.countdown(duration)
