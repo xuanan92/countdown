@@ -7,6 +7,11 @@ function M.setup()
 	-- vim.cmd("command! -nargs=1 Countdown lua require('countdown').countdown(<args>)")
 end
 
+function M.sound()
+	-- linux
+	os.execute("aplay $HOME/mydotfile/joplin/sounds/pr_in_space.mp3")
+end
+
 function M.countdown(duration)
 	if countdown_job_id then
 		-- If a countdown is already running, stop the current countdown
@@ -98,6 +103,9 @@ function M.countdown(duration)
 					)
 				end
 			end
+			-- Play the sound
+			M.sound()
+
 			-- Close the float terminal after 0 seconds
 			vim.defer_fn(function()
 				vim.api.nvim_win_close(countdown_win_id, true)
