@@ -151,4 +151,50 @@ function M.countreset()
 	end
 end
 
+function M.countadd(number)
+	-- add time here with a number
+	-- when command Countadd 15 it will
+	-- find all three places
+	local current_buffer = vim.api.nvim_get_current_buf()
+	-- find the first line
+	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
+	local action_initNumber = string.match(first_line[1], "&([%d]+)&")
+	local project_initNumber = string.match(first_line[1], "#([%d]+)#")
+	first_line[1] = string.gsub(
+		first_line[1],
+		"&[%d]+& #[%d]+#",
+		"&"
+			.. (tonumber(action_initNumber) + tonumber(number))
+			.. "& #"
+			.. (tonumber(project_initNumber) + tonumber(number))
+			.. "0&"
+	)
+	-- update
+	vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { first_line[1] })
+	-- find the line after plan
+	local current_Nlines = vim.api.nvim_buf_get_lines(current_buffer, 0, -1, false)
+	local plans_line_number
+	for i, line in ipairs(current_Nlines) do
+		if line:find("# =Plans=") then
+			plans_line_number = i
+			break
+		end
+	end
+	-- update
+	if plans_line_number then
+		local next_line_number = plans_line_number + 1
+		local next_line = current_Nlines[next_line_number]
+		if next_line then
+			local duration_action = string.match(next_line, "&([%d]+)&")
+			if duration_action then
+				next_line =
+					string.gsub(next_line, "&[%d]+&", "&" .. (tonumber(action_initNumber) + tonumber(number)) .. "&")
+			else
+				next_line = "&" .. (tonumber(action_initNumber) + tonumber(number)) .. "& " .. next_line
+			end
+			vim.api.nvim_buf_set_lines(current_buffer, plans_line_number, next_line_number, false, { next_line })
+		end
+	end
+end
+
 return M
