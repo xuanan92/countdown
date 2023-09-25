@@ -167,7 +167,7 @@ function M.countadd(number)
 			.. (tonumber(action_initNumber) + tonumber(number))
 			.. "& #"
 			.. (tonumber(project_initNumber) + tonumber(number))
-			.. "0&"
+			.. "#"
 	)
 	-- update
 	vim.api.nvim_buf_set_lines(current_buffer, 0, 1, false, { first_line[1] })
