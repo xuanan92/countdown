@@ -44,7 +44,7 @@ function M.countdown(minus)
 		"sh",
 		"-c",
 		string.format(
-			[[for i in $(seq %d -1 1); do echo "You set work duration for %d minutes \n Countdown: $i seconds remaining"; sleep 0.3; done; echo 'Countdown: Time is up!']],
+			[[for i in $(seq %d -1 1); do echo "You set work duration for %d minutes \n Countdown: $i seconds remaining"; sleep 1; done; echo 'Countdown: Time is up!']],
 			duration,
 			minus
 		),
