@@ -12,7 +12,8 @@ function M.sound()
 	os.execute("timeout 1 aplay $HOME/mydotfile/joplin/sounds/pr_in_space.mp3")
 end
 
-function M.countdown(duration)
+function M.countdown(minus)
+	local duration = tonumber(minus) * 60
 	if countdown_job_id then
 		-- If a countdown is already running, stop the current countdown
 		vim.fn.jobstop(countdown_job_id)
@@ -151,10 +152,11 @@ function M.countreset()
 	end
 end
 
-function M.countadd(number)
+function M.countadd(minus)
 	-- add time here with a number
 	-- when command Countadd 15 it will
 	-- find all three places
+	local number = tonumber(minus) * 60
 	local current_buffer = vim.api.nvim_get_current_buf()
 	-- find the first line
 	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
