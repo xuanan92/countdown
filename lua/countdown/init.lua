@@ -153,11 +153,10 @@ function M.countreset()
 	end
 end
 
-function M.countadd(minus)
+function M.countadd(number)
 	-- add time here with a number
 	-- when command Countadd 15 it will
 	-- find all three places
-	local number = tonumber(minus) * 60
 	local current_buffer = vim.api.nvim_get_current_buf()
 	-- find the first line
 	local first_line = vim.api.nvim_buf_get_lines(current_buffer, 0, 1, false)
