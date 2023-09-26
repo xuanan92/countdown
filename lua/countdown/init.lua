@@ -22,7 +22,7 @@ function M.countdown(minus)
 	end
 
 	local width = 50
-	local height = 1
+	local height = 2
 	--
 	-- Get the current buffer and window
 	local current_buffer = vim.api.nvim_get_current_buf()
