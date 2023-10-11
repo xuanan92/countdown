@@ -194,7 +194,7 @@ function M.countadd(number)
       else
         next_line = "&" .. (tonumber(action_initNumber) + tonumber(number)) .. "& " .. next_line
       end
-      vim.api.nvim_buf_set_lines(current_buffer, plans_line_number, next_line_number, false, { next_line })
+      vim.api.nvim_buf_set_lines(current_buffer, plans_line_number + 1, next_line_number, false, { next_line })
     end
   end
 end
