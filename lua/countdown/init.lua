@@ -9,7 +9,8 @@ end
 
 function M.sound()
 	-- linux
-	os.execute("timeout 1 aplay ./pr_in_space.mp3")
+	local audioPath = vim.fn.expand("<sfile>:p:h") .. "/media/pr_in_space.mp3"
+	os.execute("timeout 1 aplay" .. audioPath)
 end
 
 function M.countdown(minus)
@@ -87,7 +88,7 @@ function M.countdown(minus)
 			end
 
 			if plans_line_number then
-				local next_line_number = plans_line_number + 2
+				local next_line_number = plans_line_number + 1
 				local next_line = current_Nlines[next_line_number]
 				if next_line then
 					local duration_action = string.match(next_line, "&([%d]+)&")
@@ -133,8 +134,8 @@ function M.countreset()
 			break
 		end
 	end
-	local new_line = current_Nlines[plans_line_number + 2]
-	table.remove(current_Nlines, plans_line_number + 2)
+	local new_line = current_Nlines[plans_line_number + 1]
+	table.remove(current_Nlines, plans_line_number + 1)
 	vim.api.nvim_buf_set_lines(current_buffer, 0, -1, false, { unpack(current_Nlines) })
 	-- append new lines to history next line
 	for i, line in ipairs(current_Nlines) do
@@ -144,7 +145,7 @@ function M.countreset()
 		end
 	end
 	if history_line_number then
-		local next_line_number = history_line_number + 2
+		local next_line_number = history_line_number + 1
 		local next_line = current_Nlines[next_line_number]
 		if next_line then
 			table.insert(current_Nlines, next_line_number, new_line)
@@ -184,7 +185,7 @@ function M.countadd(number)
 	end
 	-- update
 	if plans_line_number then
-		local next_line_number = plans_line_number + 2
+		local next_line_number = plans_line_number + 1
 		local next_line = current_Nlines[next_line_number]
 		if next_line then
 			local duration_action = string.match(next_line, "&([%d]+)&")
