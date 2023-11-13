@@ -9,7 +9,7 @@ end
 
 function M.sound()
 	-- linux
-	local audioPath = vim.fn.expand("<sfile>:p:h") .. "/media/pr_in_space.mp3"
+	local audioPath = "$HOME/.local/share/nvim/lazy/countdown/media/pr_in_space.mp3"
 	os.execute("timeout 1 aplay" .. audioPath)
 end
 
