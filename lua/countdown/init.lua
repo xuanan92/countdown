@@ -9,7 +9,7 @@ end
 
 function M.sound()
 	-- linux
-	local audioPath = "/root/.local/share/nvim/lazy/countdown/media/pr_in_space.mp3"
+	local audioPath = "/home/xuanan92/Desktop/pr_in_space.mp3"
 	os.execute("timeout 1 aplay" .. audioPath)
 end
 
