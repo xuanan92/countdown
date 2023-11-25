@@ -9,8 +9,7 @@ end
 
 function M.sound()
 	-- linux
-	local audioPath = "/home/xuanan92/Desktop/pr_in_space.mp3"
-	os.execute("timeout 1 aplay" .. audioPath)
+	os.execute("timeout 1 aplay /home/xuanan92/Desktop/pr_in_space.mp3")
 end
 
 function M.countdown(minus)
